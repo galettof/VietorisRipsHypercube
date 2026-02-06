@@ -3,11 +3,13 @@
   <head>
     <title>VietorisRipsHypercube -- homology of VR complexes of hypercubes as representation</title>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <link type="text/css" rel="stylesheet" href="/usr/share/Macaulay2/Style/doc.css">
+    <link type="text/css" rel="stylesheet" href="https://macaulay2.com/doc/Macaulay2/share/Macaulay2/Style/doc.css">
 
-    <link rel="stylesheet" href="/usr/share/Macaulay2/Style/katex/katex.min.css">
-    <script defer="defer" src="/usr/share/Macaulay2/Style/katex/katex.min.js"></script>
-    <script defer="defer" src="/usr/share/Macaulay2/Style/katex/contrib/auto-render.min.js"></script>
+    https://macaulay2.com/doc/Macaulay2/share/Macaulay2/Style/doc.css
+
+    <link rel="stylesheet" href="https://macaulay2.com/doc/Macaulay2/share/Macaulay2/Style/katex/katex.min.css">
+    <script defer="defer" src="https://macaulay2.com/doc/Macaulay2/share/Macaulay2/Style/katex/katex.min.js"></script>
+    <script defer="defer" src="https://macaulay2.com/doc/Macaulay2/share/Macaulay2/Style/katex/contrib/auto-render.min.js"></script>
     <script>
       var macros = {
           "\\break": "\\\\",
@@ -30,24 +32,14 @@
       });
     </script>
     <style>.katex { font-size: 1em; }</style>
-    <script defer="defer" src="/usr/share/Macaulay2/Style/katex/contrib/copy-tex.min.js"></script>
-    <script defer="defer" src="/usr/share/Macaulay2/Style/katex/contrib/render-a11y-string.min.js"></script>
-    <script src="/usr/share/Macaulay2/Style/prism.js"></script>
+    <script defer="defer" src="https://macaulay2.com/doc/Macaulay2/share/Macaulay2/Style/katex/contrib/copy-tex.min.js"></script>
+    <script defer="defer" src="https://macaulay2.com/doc/Macaulay2/share/Macaulay2/Style/katex/contrib/render-a11y-string.min.js"></script>
+    <script src="https://macaulay2.com/doc/Macaulay2/share/Macaulay2/Style/prism.js"></script>
     <script>var current_version = '1.25.06';</script>
-    <script src="/usr/share/Macaulay2/Style/version-select.js"></script>
-    <link type="image/x-icon" rel="icon" href="/usr/share/Macaulay2/Style/icon.gif">
+    <script src="https://macaulay2.com/doc/Macaulay2/share/Macaulay2/Style/version-select.js"></script>
+    <link type="image/x-icon" rel="icon" href="https://macaulay2.com/doc/Macaulay2/share/Macaulay2/Style/icon.gif">
   </head>
   <body>
-    <div id="buttons">
-      <div>
-<a href="https://macaulay2.com/">Macaulay2</a> <span id="version-select-container"></span> » <a title="Macaulay2 documentation" href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/index.html">Documentation </a> <br><a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/_packages_spprovided_spwith_sp__Macaulay2.html">Packages</a> » <span><a title="homology of VR complexes of hypercubes as representation" href="index.html">VietorisRipsHypercube</a> :: <a title="homology of VR complexes of hypercubes as representation" href="index.html">VietorisRipsHypercube</a></span>      </div>
-      <div class="right">
-<form method="get" action="https://www.google.com/search">
-  <input placeholder="Search" type="text" name="q" value="">
-  <input type="hidden" name="q" value="site:macaulay2.com/doc">
-</form>
-next | previous | forward | backward | up | <a href="master.html">index</a> | <a href="toc.html">toc</a>      </div>
-    </div>
     <hr>
     <div>
       <h1>VietorisRipsHypercube -- homology of VR complexes of hypercubes as representation</h1>
@@ -379,7 +371,7 @@ o24 = |- 2e     e     e      + 2e     e     e      + 2e     e     e      - 2e   
         <div>
           <p></p>
           <h2>Some Technical Details</h2>
-          <p>All the information about the simplicial complex $X^{n,2}$ is stored in an object of type <span class="tt">VRData</span> which is a dedicated type of <a title="the class of all hash tables" href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Hash__Table.html">HashTable</a>. Let us take a look at the object for the example above.</p>
+          <p>All the information about the simplicial complex $X^{n,2}$ is stored in an object of type <span class="tt">VRData</span> which is a dedicated type of <a title="the class of all hash tables" href="https://macaulay2.com/doc/Macaulay2/share/doc/Macaulay2/Macaulay2Doc/html/___Hash__Table.html">HashTable</a>. Let us take a look at the object for the example above.</p>
         </div>
         <table class="examples">
           <tr>
@@ -406,7 +398,7 @@ o25 = VRData{character => MutableHashTable{...2...}                             
           </tr>
         </table>
         <div>
-          <p>Most of the data is self explanatory. The key <span class="tt">complex</span> stores the simplicial chain complex of the entire simplicial complex. Access to the simplicial complex and related data (e.g.: faces, chain complex, boundary map, homology, and Stanley-Reisner ideal) is provided by the Macaulay2 package <a title="exploring abstract simplicial complexes within commutative algebra" href="/usr/share/doc/Macaulay2/SimplicialComplexes/html/index.html">SimplicialComplexes</a>. The small complexes, their homology, and characters are stored in dedicated keys to avoid computing them again. The key <span class="tt">cubicDimension</span> contains a hash table indexed by integers. Each key $p$ corresponds to a table, indexed by dimension, indicating the position of the faces of $\{0\}^{n-p} \times X^{p,r}$ within the list of faces of $X^{n,r}$. This information is used to form the differentials in the small complexes by restricting the boundary map of $X^{n,r}$ to $\{0\}^{n-p} \times X^{p,r}$.</p>
+          <p>Most of the data is self explanatory. The key <span class="tt">complex</span> stores the simplicial chain complex of the entire simplicial complex. Access to the simplicial complex and related data (e.g.: faces, chain complex, boundary map, homology, and Stanley-Reisner ideal) is provided by the Macaulay2 package <a title="exploring abstract simplicial complexes within commutative algebra" href="https://macaulay2.com/doc/Macaulay2/share/doc/Macaulay2/SimplicialComplexes/html/index.html">SimplicialComplexes</a>. The small complexes, their homology, and characters are stored in dedicated keys to avoid computing them again. The key <span class="tt">cubicDimension</span> contains a hash table indexed by integers. Each key $p$ corresponds to a table, indexed by dimension, indicating the position of the faces of $\{0\}^{n-p} \times X^{p,r}$ within the list of faces of $X^{n,r}$. This information is used to form the differentials in the small complexes by restricting the boundary map of $X^{n,r}$ to $\{0\}^{n-p} \times X^{p,r}$.</p>
         </div>
       </div>
       <div>
@@ -471,7 +463,7 @@ o25 = VRData{character => MutableHashTable{...2...}                             
         </div>
         <div class="waystouse">
           <h2>For the programmer</h2>
-          <p>The object <a title="homology of VR complexes of hypercubes as representation" href="index.html">VietorisRipsHypercube</a> is <span>a <a title="the class of all packages" href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Package.html">package</a></span>, defined in <span class="tt">VietorisRipsHypercube.m2</span>.</p>
+          <p>The object <a title="homology of VR complexes of hypercubes as representation" href="index.html">VietorisRipsHypercube</a> is <span>a <a title="the class of all packages" href="https://macaulay2.com/doc/Macaulay2/share/doc/Macaulay2/Macaulay2Doc/html/___Package.html">package</a></span>, defined in <span class="tt">VietorisRipsHypercube.m2</span>.</p>
         </div>
         <hr>
         <div class="waystouse">
