@@ -249,6 +249,9 @@ character(VRData,ZZ,ZZ) := opts -> (X,c,i) -> (
 -- complex of a cube, and computing the differential allows
 -- us to confirm
 differential = method();
+
+-- previous version, without relations on the image
+-*
 differential(VRData,ZZ) := (X,t) -> (
     -- extract saved information
     Δ := X#(symbol simplicialComplex);
@@ -277,6 +280,50 @@ differential(VRData,ZZ) := (X,t) -> (
     -- get image as polynomials
     (phi matrix{ f_cod }) * im
     )
+*-
+
+-- new version, with relations on the image
+differential(VRData,ZZ) := (X,t) -> (
+    -- extract saved information
+    Δ := X#(symbol simplicialComplex);
+    C := X#(symbol complex);
+    -- find length of indexing sequences
+    n := length last baseName first gens ring Δ;
+    if t<1 or t>n then error "integer index outside range";
+    -- if data is missing, compute homology
+    if not X#(symbol presentation)#?(t,t) then homology(X,t,t);
+    -- domain indices
+    dom := X#(symbol cubicDimension)#t#t;
+    -- codomain indices
+    f := faces(t-1,Δ);
+    cod := positions(f, m -> hasInitialZeros(m,n-t) and hasCubicDimension(m,t-1));
+    -- matrix of differential
+    mat := (C.dd_t)^cod_dom;
+    -- get generators of homology
+    g := gens X#(symbol presentation)#(t,t);
+    -- get image of generators under differential
+    im := mat*g;
+    -- set up a ring for monomials corresponding to simplices
+    e := getSymbol "e";
+    S := QQ[e_(t:0)..e_(t:1),SkewCommutative=>true];
+    R := ring Δ;
+    phi := map(S,R,apply(gens R, u -> e_(take(last baseName u,-t))));
+    -- get image as matrix of polynomials
+    M := (phi matrix{ f_cod }) * im;
+    -- get relations on homology
+    I := ideal relations homology(X,t-1,t-1);
+    -- generate all relations with one longer binary sequences
+    J := sum flatten for i to t-1 list (
+	for j to 1 list (
+	    L := apply(gens ring I, u -> e_(insert(i,j,last baseName u)));
+	    psi := map(S,ring I,L);
+	    psi I
+	    )
+	);
+    -- map to the quotient
+    psi := map(S/J,S);
+    flatten entries psi M
+    )
 
 beginDocumentation()
 
@@ -296,7 +343,8 @@ Node
 	homology of VR complexes of hypercubes as representation
     Description
 	Text
-	    This package implements computations described in the article "TITLE"
+	    This Macaulay2 package implements computations described in the article
+	    "TITLE"
 	    by Federico Galetto, Jonathan Montaño, and Zoe Wellner.
 	    The most up-to-date version of this package can be found at
 	    @HREF "https://github.com/galettof/VietorisRipsHypercube"@.
@@ -432,9 +480,23 @@ Node
 
 	    For the example above, we obtain the following.
 	Example
-	    netList flatten entries differential(X42,1)
-	    netList flatten entries differential(X42,2)
-	    netList flatten entries differential(X42,3)
+	    netList differential(X42,1)
+	    netList differential(X42,2)
+	Text
+	    We see that $d^1_{1,0}$ sends the edge $[0,1]$ to its vertices, and
+	    $d^1_{2,0}$ sends the square on the vertices $(00)$, $(01)$, $(10)$, and
+	    $(11)$ to its boundary.
+	Example
+	    L = differential(X42,3);
+	    netList L
+	Text
+	    Now, the homology of the small complex of cubic dimension 3 has two
+	    generators, and $d^1_{3,0}$ sends them to the expressions above,
+	    which are the same. This means we can change basis in the homology
+	    by taking the sum and difference of the generators, so that $d^1_{3,0}$
+	    sends one of these new basis elements to zero.
+	Example
+	    netList {L_0+L_1,L_0-L_1}
 	Text
 	    
 	    @SUBSECTION "Some Technical Details"@
