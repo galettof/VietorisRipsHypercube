@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <body>
-    <div id="buttons">
-      <div>
-<a href="https://macaulay2.com/">Macaulay2</a> <span id="version-select-container"></span> » <a title="Macaulay2 documentation" href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/index.html">Documentation </a> <br><a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/_packages_spprovided_spwith_sp__Macaulay2.html">Packages</a> » <span><a title="homology of VR complexes of hypercubes as representation" href="index.html">VietorisRipsHypercube</a> :: <a title="homology of VR complexes of hypercubes as representation" href="index.html">VietorisRipsHypercube</a></span>      </div>
-      <div class="right">
-<form method="get" action="https://www.google.com/search">
-  <input placeholder="Search" type="text" name="q" value="">
-  <input type="hidden" name="q" value="site:macaulay2.com/doc">
-</form>
-next | previous | forward | backward | up | <a href="master.html">index</a> | <a href="toc.html">toc</a>      </div>
-    </div>
-    <hr>
     <div>
       <h1>VietorisRipsHypercube -- homology of VR complexes of hypercubes as representation</h1>
       <div>
