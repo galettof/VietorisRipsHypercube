@@ -13,8 +13,10 @@
 $$C^{n,r}_{i,p} \cong \text{Ind}^{\mathfrak{H}_n}_{\mathfrak{S}_{n-p} \times \mathfrak{H}_p} \left( \{n-p\} \otimes C^{p,r}_{i,p} \right)$$
 
 of representations of $\mathfrak{H}_n$, where $\{n-p\}$ denotes the 1-dimensional trivial representation of $\mathfrak{S}_{n-p}$. Since induction between finite groups is an exact functor, we then get
-            $$E^1_{p,q} \cong \text{Ind}^{\mathfrak{H}_n}_{\mathfrak{S}_{n-p} \times \mathfrak{H}_p} \left( \{n-p\} \otimes H_{p+q} (C^{p,r}_{p+\bullet,p}) \right).$$
-            This reduces the problem to computing the homology of the complex $C^{p,r}_{p+\bullet,p}$, which we refer to as a &quot;small complex&quot; for the purpose of this package. Note that the small complexes do not depend on $n$ so they are finite, which makes it possible to build them and compute their homology with the use of software.</p>
+
+$$E^1_{p,q} \cong \text{Ind}^{\mathfrak{H}_n}_{\mathfrak{S}_{n-p} \times \mathfrak{H}_p} \left( \{n-p\} \otimes H_{p+q} (C^{p,r}_{p+\bullet,p}) \right).$$
+
+This reduces the problem to computing the homology of the complex $C^{p,r}_{p+\bullet,p}$, which we refer to as a &quot;small complex&quot; for the purpose of this package. Note that the small complexes do not depend on $n$ so they are finite, which makes it possible to build them and compute their homology with the use of software.</p>
           <h2>Basic Functionality</h2>
           <p>The methods in this package allow users to construct small complexes, to compute their homology groups, and to describe those homology groups as representations of a suitable hyperoctahedral group by computing their characters. We illustrate the workflow for $X^{n,2}$, the Vietoris-Rips complex at scale 2 of $Q_n$. First, we construct the simplicial complex for $n=4$.</p>
         </div>
