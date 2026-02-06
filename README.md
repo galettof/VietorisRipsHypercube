@@ -1,42 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>VietorisRipsHypercube -- homology of VR complexes of hypercubes as representation</title>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <link type="text/css" rel="stylesheet" href="/usr/share/Macaulay2/Style/doc.css">
-
-    <link rel="stylesheet" href="/usr/share/Macaulay2/Style/katex/katex.min.css">
-    <script defer="defer" src="/usr/share/Macaulay2/Style/katex/katex.min.js"></script>
-    <script defer="defer" src="/usr/share/Macaulay2/Style/katex/contrib/auto-render.min.js"></script>
-    <script>
-      var macros = {
-          "\\break": "\\\\",
-          "\\ZZ": "\\mathbb{Z}",
-          "\\NN": "\\mathbb{N}",
-          "\\QQ": "\\mathbb{Q}",
-          "\\RR": "\\mathbb{R}",
-          "\\CC": "\\mathbb{C}",
-          "\\PP": "\\mathbb{P}"
-      }, delimiters = [
-          { left: "$$",  right: "$$",  display: true},
-          { left: "\\[", right: "\\]", display: true},
-          { left: "$",   right: "$",   display: false},
-          { left: "\\(", right: "\\)", display: false}
-      ], ignoredTags = [
-	  "kbd", "var", "samp", "script", "noscript",
-	  "style", "textarea", "pre", "code", "option" ];
-      document.addEventListener("DOMContentLoaded", function() {
-        renderMathInElement(document.body, { delimiters: delimiters, macros: macros, ignoredTags: ignoredTags, trust: true });
-      });
-    </script>
-    <style>.katex { font-size: 1em; }</style>
-    <script defer="defer" src="/usr/share/Macaulay2/Style/katex/contrib/copy-tex.min.js"></script>
-    <script defer="defer" src="/usr/share/Macaulay2/Style/katex/contrib/render-a11y-string.min.js"></script>
-    <script src="/usr/share/Macaulay2/Style/prism.js"></script>
-    <script>var current_version = '1.25.06';</script>
-    <script src="/usr/share/Macaulay2/Style/version-select.js"></script>
-    <link type="image/x-icon" rel="icon" href="/usr/share/Macaulay2/Style/icon.gif">
-  </head>
   <body>
     <div id="buttons">
       <div>
