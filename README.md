@@ -12,7 +12,7 @@ version of this package can be found at
 The goal is to compute the homology groups of the Vietoris-Rips complex
 of the hypercube $Q_n$ at a given scale $r$ with respect to the
 Hamming distance, and to describe them as representations of the
-hyperoctahedral group $\mathfrak{H}_n$, i.e., the automorphism group
+hyperoctahedral group $`\mathfrak{H}_n`$, i.e., the automorphism group
 of $Q_n$. We denote this simplicial complex as $X^{n,r}$. A simplex
 $\Delta$ in $X^{n,r}$ has cubic dimension $p$ if it can be
 isometrically embedded in $Q_p$ but not in $Q_{p-1}$. The simplices
