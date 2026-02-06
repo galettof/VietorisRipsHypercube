@@ -1,56 +1,5 @@
 This Macaulay2 package implements computations described in the article "TITLE" by Federico Galetto, Jonathan Montaño, and Zoe Wellner.
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>VietorisRipsHypercube -- homology of VR complexes of hypercubes as representation</title>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <link type="text/css" rel="stylesheet" href="/usr/share/Macaulay2/Style/doc.css">
 
-    <link rel="stylesheet" href="/usr/share/Macaulay2/Style/katex/katex.min.css">
-    <script defer="defer" src="/usr/share/Macaulay2/Style/katex/katex.min.js"></script>
-    <script defer="defer" src="/usr/share/Macaulay2/Style/katex/contrib/auto-render.min.js"></script>
-    <script>
-      var macros = {
-          "\\break": "\\\\",
-          "\\ZZ": "\\mathbb{Z}",
-          "\\NN": "\\mathbb{N}",
-          "\\QQ": "\\mathbb{Q}",
-          "\\RR": "\\mathbb{R}",
-          "\\CC": "\\mathbb{C}",
-          "\\PP": "\\mathbb{P}"
-      }, delimiters = [
-          { left: "$$",  right: "$$",  display: true},
-          { left: "\\[", right: "\\]", display: true},
-          { left: "$",   right: "$",   display: false},
-          { left: "\\(", right: "\\)", display: false}
-      ], ignoredTags = [
-	  "kbd", "var", "samp", "script", "noscript",
-	  "style", "textarea", "pre", "code", "option" ];
-      document.addEventListener("DOMContentLoaded", function() {
-        renderMathInElement(document.body, { delimiters: delimiters, macros: macros, ignoredTags: ignoredTags, trust: true });
-      });
-    </script>
-    <style>.katex { font-size: 1em; }</style>
-    <script defer="defer" src="/usr/share/Macaulay2/Style/katex/contrib/copy-tex.min.js"></script>
-    <script defer="defer" src="/usr/share/Macaulay2/Style/katex/contrib/render-a11y-string.min.js"></script>
-    <script src="/usr/share/Macaulay2/Style/prism.js"></script>
-    <script>var current_version = '1.25.06';</script>
-    <script src="/usr/share/Macaulay2/Style/version-select.js"></script>
-    <link type="image/x-icon" rel="icon" href="/usr/share/Macaulay2/Style/icon.gif">
-  </head>
-  <body>
-    <div id="buttons">
-      <div>
-<a href="https://macaulay2.com/">Macaulay2</a> <span id="version-select-container"></span> » <a title="Macaulay2 documentation" href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/index.html">Documentation </a> <br><a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/_packages_spprovided_spwith_sp__Macaulay2.html">Packages</a> » <span><a title="homology of VR complexes of hypercubes as representation" href="index.html">VietorisRipsHypercube</a> :: <a title="homology of VR complexes of hypercubes as representation" href="index.html">VietorisRipsHypercube</a></span>      </div>
-      <div class="right">
-<form method="get" action="https://www.google.com/search">
-  <input placeholder="Search" type="text" name="q" value="">
-  <input type="hidden" name="q" value="site:macaulay2.com/doc">
-</form>
-next | previous | forward | backward | up | <a href="master.html">index</a> | <a href="toc.html">toc</a>      </div>
-    </div>
-    <hr>
-    <div>
       <h1>VietorisRipsHypercube -- homology of VR complexes of hypercubes as representation</h1>
       <div>
         <h2>Description</h2>
@@ -474,12 +423,3 @@ o25 = VRData{character => MutableHashTable{...2...}                             
           <h2>For the programmer</h2>
           <p>The object <a title="homology of VR complexes of hypercubes as representation" href="index.html">VietorisRipsHypercube</a> is <span>a <a title="the class of all packages" href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Package.html">package</a></span>, defined in <span class="tt">VietorisRipsHypercube.m2</span>.</p>
         </div>
-        <hr>
-        <div class="waystouse">
-          <p>The source of this document is in <span class="tt">VietorisRipsHypercube.m2:526:0</span>.</p>
-        </div>
-      </div>
-    </div>
-  </body>
-
-</html>
