@@ -1,7 +1,7 @@
 newPackage(
      "VietorisRipsHypercube",
-     Version => "0.1",
-     Date => "December 17, 2025",
+     Version => "1.0",
+     Date => "February 12, 2026",
      AuxiliaryFiles => false,
      Authors => {
 	 {Name => "Federico Galetto",
@@ -23,9 +23,7 @@ newPackage(
 
 export {
     "VRHypercube",
-    "smallComplex",
     "scale",
-    "cubicDimension",
     "differential"
     }
 
@@ -62,19 +60,17 @@ VRHypercube(ZZ,ZZ) := VRData => (n,r) -> (
 	-- multiply those variables
 	product);
     Δ := simplicialComplex I;
-    new VRData from {
-	(symbol scale) => r,
-	(symbol size) => n,
-	(symbol ring) => R,
-	(symbol ideal) => I,
-	(symbol simplicialComplex) => Δ,
-	(symbol complex) => complex Δ,
-	(symbol smallComplex) => new MutableHashTable,
-	(symbol cubicDimension) => new MutableHashTable,
-	(symbol homology) => new MutableHashTable,
-	(symbol character) => new MutableHashTable,
-	(symbol presentation) => new MutableHashTable
-	}
+    new VRData from (
+	{
+	    (symbol scale) => r,
+	    (symbol size) => n,
+	    (symbol ring) => R,
+	    (symbol ideal) => I,
+	    (symbol simplicialComplex) => Δ,
+	    (symbol complex) => complex Δ,
+	    } |
+	for i to n list ( i => new MutableHashTable )
+	)
     )
 
 -- check all vertices of a simplex are indexed by binary
@@ -104,23 +100,24 @@ hasCubicDimension = (m,c) -> (
     if number(counts, i -> i==2) == c then true else false
     )
 
--- get the "small" complex C^{c,r}_{c+\bullet,c}
+-- get the complex C^{c,r}_{c+\bullet,c}
+-- throughout the comments, this is referred to as a "small" complex
 -- this is the complex of the faces of cubic dimension c
 -- in {0}^(n-c) x X^{c,r} inside X^{n,r}
 -- 1st paramater: Δ, the VR complex of Q_R at scale r
 -- 2nd parameter: c, cubic dimension
-smallComplex = method()
-smallComplex(VRData,ZZ) := Complex => (X,c) -> (
-    -- check if precomputed
-    if not X#(symbol smallComplex)#?c then (
+complex(VRData,ZZ) := {} >> opts -> (X,c) -> (
+    -- find length of indexing sequences
+    n := X#(symbol size);
+    -- check parameter is viable
+    if c<0 or c>n then error "integer index out of range";
+    -- check if small complex is precomputed
+    if not X#c#?(symbol complex) then (
 	-- extract saved information
 	Δ := X#(symbol simplicialComplex);
 	C := X#(symbol complex);
 	-- length of C
 	l := length C;
-	-- find length of indexing sequences
-	n := length last baseName first gens ring Δ;
-	if c<0 or c>n then error "integer index outside range";
 	-- find the position of the faces of cubdim c inside
 	-- the list of all faces of Δ hashed by dimension
 	pos := hashTable parallelApply(toList(0..(l-1)), i-> (
@@ -132,51 +129,65 @@ smallComplex(VRData,ZZ) := Complex => (X,c) -> (
 	-- this gives a list of matrices
 	mat := parallelApply(toList(1..l-1), i -> (C.dd_i)^(pos#(i-1))_(pos#i));
 	-- store position of faces
-	X#(symbol cubicDimension)#c = pos;
+	X#c#(symbol faces) = pos;
 	-- assemble matrices into a complex, store and return
-	X#(symbol smallComplex)#c = complex mat;
+	X#c#(symbol complex) = complex mat;
+	-- create mutable hash tables to store future computations
+	-- such as homology modules, presentations, and characters
+	X#c#(symbol homology) = new MutableHashTable;
+	X#c#(symbol presentation) = new MutableHashTable;
+	X#c#(symbol character) = new MutableHashTable;
+	-- also store the map from the polynomial ring of the simplicial complex
+	-- to the skew polynomial ring of the complex for cubic dimension c
+	-- obtained by dropping initial n-c zeros of indexing binary sequences
+	R := X#(symbol ring);
+	e := getSymbol "e";
+	S := QQ[e_(c:0)..e_(c:1),SkewCommutative=>true];
+	phi := map(S,R,apply(gens R, u -> e_(take(last baseName u,-c))));
+	X#c#(symbol map) = phi;
 	);
-    X#(symbol smallComplex)#c
+    X#c#(symbol complex)
     )
 
 -- homology of small complex of cubic dimension c
 homology(VRData,ZZ) := opts -> (X,c) -> (
-    prune HH smallComplex(X,c)
+    prune HH complex(X,c)
     )
 
 -- minimal presentation for the i-th homology of the small complex
 -- of cubic dimension c as a module over the polynomial ring
 -- with variables indexed by binary sequences
 homology(VRData,ZZ,ZZ) := opts -> (X,c,i) -> (
-    -- check if precomputed
-    if not X#(symbol homology)#?(c,i) then (
+    -- find length of indexing sequences
+    n := X#(symbol size);
+    -- check 1st parameter is viable
+    if c<0 or c>n then error "1st integer index out of range";
+    -- get small complex of cubic dimension c
+    -- triggers computation if not previously done
+    C := complex(X,c);
+    if i<(min C) or i>(max C) then error "2nd integer index out of range";
+    -- check if homology is precomputed
+    if not X#c#(symbol homology)#?i then (
 	-- compute homology of the small complex, which triggers
 	-- creation of necessary data if missing
-	-- DELETE Hi := trim HH_i smallComplex(X,c);
-	X#(symbol presentation)#(c,i) = trim HH_i smallComplex(X,c);
-	-- get simplicial complex, polynomial ring, and face indices
+	X#c#(symbol presentation)#i = trim HH_i C;
+	-- get simplicial complex, face indices, and ring map
 	Δ := X#(symbol simplicialComplex);
-	R := X#(symbol ring);
-	pos := X#(symbol cubicDimension)#c;
-	-- skew commutative polynomial ring with variables indexed by
-	-- binary sequences of length c, monomials correspond to faces
-	-- in the small complex
-	e := getSymbol "e";
-	S := QQ[e_(c:0)..e_(c:1),SkewCommutative=>true];
-	phi := map(S,R,apply(gens R, u -> e_(take(last baseName u,-c))));
-	-- get all i-faces of 
+	pos := X#c#(symbol faces);
+	phi := X#c#(symbol map);
+	-- get all i-faces in the small complex
 	f := (faces(i,Δ))_(pos#i);
 	-- row matrix of monomials corresponding to faces
-	-- of dimension i and given support
+	-- of dimension i and cubic dimension c
 	m := phi( matrix{f} );
 	-- convert generators and relations of homology to ideals
-	I := ideal (m * (gens X#(symbol presentation)#(c,i)));
-	J := ideal (m * (relations X#(symbol presentation)#(c,i)));
+	I := ideal (m * (gens X#c#(symbol presentation)#i));
+	J := ideal (m * (relations X#c#(symbol presentation)#i));
 	-- in degree i+1 I/J is isomorphic to the homology of the
-	-- complex of simplices of desired support
-	X#(symbol homology)#(c,i) = I/J;
+	-- complex of simplices of desired cubic dimension
+	X#c#(symbol homology)#i = trim(I/J);
     );
-    X#(symbol homology)#(c,i)
+    X#c#(symbol homology)#i
     )
 
 -- set up Hn-action on the ring of the small complex
@@ -227,19 +238,20 @@ hActBinSeq = R -> (
 
 -- compute character of homology of small complex using BettiCharacters
 character(VRData,ZZ,ZZ) := opts -> (X,c,i) -> (
-    -- check if precomputed
-    if not X#(symbol character)#?(c,i) then (
-	-- get the homology
-	M := homology(X,c,i);
+    -- get i-th homology of small complex of cubic dimension c
+    -- triggers computation if not previously done
+    M := homology(X,c,i);
+    -- check if character was precomputed
+    if not X#c#(symbol character)#?i then (
 	-- set up the action
 	Hn := hActBinSeq ring M;
 	A := action(M,Hn);
 	-- compute the character in the right degree
 	x := character(A,i+1);
 	-- shift it to homological degree i and return it
-	X#(symbol character)#(c,i) = x[-i];
+	X#c#(symbol character)#i = x[-i];
 	);
-    X#(symbol character)#(c,i)
+    X#c#(symbol character)#i
     )
 
 -- compute the differential of the complex E^1_{*,0}, i.e.,
@@ -249,73 +261,39 @@ character(VRData,ZZ,ZZ) := opts -> (X,c,i) -> (
 -- complex of a cube, and computing the differential allows
 -- us to confirm
 differential = method();
-
--- previous version, without relations on the image
--*
 differential(VRData,ZZ) := (X,t) -> (
     -- extract saved information
     Δ := X#(symbol simplicialComplex);
     C := X#(symbol complex);
     -- find length of indexing sequences
-    n := length last baseName first gens ring Δ;
+    n := X#(symbol size);
     if t<1 or t>n then error "integer index outside range";
-    -- if data is missing, compute homology
-    if not X#(symbol presentation)#?(t,t) then homology(X,t,t);
+    -- compute homology, in case it is missing
+    homology(X,t,t);
     -- domain indices
-    dom := X#(symbol cubicDimension)#t#t;
+    dom := X#t#(symbol faces)#t;
     -- codomain indices
     f := faces(t-1,Δ);
     cod := positions(f, m -> hasInitialZeros(m,n-t) and hasCubicDimension(m,t-1));
     -- matrix of differential
     mat := (C.dd_t)^cod_dom;
+    -- get ring map
+    phi := X#t#(symbol map);
     -- get generators of homology
-    g := gens X#(symbol presentation)#(t,t);
+    g := gens X#t#(symbol presentation)#t;
     -- get image of generators under differential
     im := mat*g;
-    -- set up a ring for monomials corresponding to simplices
-    e := getSymbol "e";
-    S := QQ[e_(t:0)..e_(t:1),SkewCommutative=>true];
-    R := ring Δ;
-    phi := map(S,R,apply(gens R, u -> e_(take(last baseName u,-t))));
-    -- get image as polynomials
-    (phi matrix{ f_cod }) * im
-    )
-*-
-
--- new version, with relations on the image
-differential(VRData,ZZ) := (X,t) -> (
-    -- extract saved information
-    Δ := X#(symbol simplicialComplex);
-    C := X#(symbol complex);
-    -- find length of indexing sequences
-    n := length last baseName first gens ring Δ;
-    if t<1 or t>n then error "integer index outside range";
-    -- if data is missing, compute homology
-    if not X#(symbol presentation)#?(t,t) then homology(X,t,t);
-    -- domain indices
-    dom := X#(symbol cubicDimension)#t#t;
-    -- codomain indices
-    f := faces(t-1,Δ);
-    cod := positions(f, m -> hasInitialZeros(m,n-t) and hasCubicDimension(m,t-1));
-    -- matrix of differential
-    mat := (C.dd_t)^cod_dom;
-    -- get generators of homology
-    g := gens X#(symbol presentation)#(t,t);
-    -- get image of generators under differential
-    im := mat*g;
-    -- set up a ring for monomials corresponding to simplices
-    e := getSymbol "e";
-    S := QQ[e_(t:0)..e_(t:1),SkewCommutative=>true];
-    R := ring Δ;
-    phi := map(S,R,apply(gens R, u -> e_(take(last baseName u,-t))));
     -- get image as matrix of polynomials
     M := (phi matrix{ f_cod }) * im;
     -- get relations on homology
     I := ideal relations homology(X,t-1,t-1);
     -- generate all relations with one longer binary sequences
+    S := target phi;
     J := sum flatten for i to t-1 list (
 	for j to 1 list (
-	    L := apply(gens ring I, u -> e_(insert(i,j,last baseName u)));
+	    L := apply(gens ring I,
+		u -> (first baseName u)_(insert(i,j,last baseName u))
+		);
 	    psi := map(S,ring I,L);
 	    psi I
 	    )
@@ -334,9 +312,8 @@ Node
 	VietorisRipsHypercube
 	VRHypercube
 	(VRHypercube, ZZ, ZZ)
-	cubicDimension
 	scale
-	smallComplex
+	(complex, VRData, ZZ)
 	differential
 	(differential, VRData, ZZ)
     Headline
@@ -379,26 +356,27 @@ Node
 	    \operatorname{Ind}^{\mathfrak{H}_n}_{\mathfrak{S}_{n-p} \times \mathfrak{H}_p}
 	    \left( \{n-p\} \otimes H_{p+q} (C^{p,r}_{p+\bullet,p}) \right).$$
 	    This reduces the problem to computing the homology of the complex
-	    $C^{p,r}_{p+\bullet,p}$, which we refer to as a "small complex" for the
-	    purpose of this package. Note that the small complexes do not depend on
-	    $n$ so they are finite, which makes it possible to build them and compute
-	    their homology with the use of software.
+	    $C^{p,r}_{p+\bullet,p}$, which we refer to as the complex for cubic
+	    dimension $p$. Note that $C^{p,r}_{p+\bullet,p}$ does not depend on
+	    $n$, so it is finite, which makes it possible to build it and compute
+	    its homology using software.
 
 	    @SUBSECTION "Basic Functionality"@
 
-	    The methods in this package allow users to construct small complexes, to
+	    The methods in this package allow users to construct the complexes
+	    $C^{p,r}_{p+\bullet,p}$, to
 	    compute their homology groups, and to describe those homology groups as
 	    representations of a suitable hyperoctahedral group by computing their
 	    characters. We illustrate the workflow for $X^{n,2}$, the Vietoris-Rips
-	    complex at scale 2 of $Q_n$. First, we construct the simplicial complex
-	    for $n=4$.
+	    complex at scale $r=2$ of $Q_n$. First, we construct the simplicial
+	    complex for $n=4$.
 	Example
 	    X42 = VRHypercube(4,2)
 	Text
-	    Next, we form the small complex for cubic dimension 2 and compute its
-	    homology.
+	    Next, we form the complex $C^{2,2}_{2+\bullet,2}$ for cubic dimension 2
+	    and compute its homology.
 	Example
-	    smallComplex(X42,2)
+	    complex(X42,2)
 	    homology(X42,2)
 	Text
 	    We see that the homology is a 1-dimensional vector space in homological
@@ -417,8 +395,8 @@ Node
 	    orientation of the simplex. Then, a linear combination of monomials
 	    corresponds to a formal linear combination of simplices. In our case,
 	    $-[(0,0),(0,1),(1,1)]+[(0,0),(1,0),(1,1)]$ is a linear combination of
-	    triangles that generates the homology of the small complex of cubic
-	    dimension 2. This linear combination corresponds to one of the two ways of
+	    triangles that generates $H_2 (C^{2,2}_{2+\bullet,2})$.
+	    This linear combination corresponds to one of the two ways of
 	    dividing a square into two triangles by tracing a diagonal. The relation
 	    on the homology says that the other way of dividing the square is equivalent.
 
@@ -444,7 +422,7 @@ Node
 	    When we perform the same steps for cubic dimension 3, we obtain the
 	    following.
 	Example
-	    smallComplex(X42,3)
+	    complex(X42,3)
 	    homology(X42,3)
 	    H33 = homology(X42,3,3);
 	    netList flatten entries generators H33
@@ -453,18 +431,19 @@ Node
 	    T3 = hyperoctahedralGroupTable(3,QQ);
 	    c33 / T3
 	Text
-	    We deduce that the homology of the small complex for cubic dimension 3
+	    We deduce that the homology of $C^{3,2}_{3+\bullet,3}$
 	    is a 2-dimensional vector space in homological degree 3. We get two
 	    explicit generators and there are no relations. As a represenatation of
 	    $\mathfrak{H}_3$ it is isomorphic to the direct sum of the irreducibles
 	    indexed by the pairs of partitions $(1^3;\varnothing)$ and
 	    $(\varnothing;1^3)$.
 
-	    Finally, we observe that the small complex for cubic dimension 4 has no
-	    homology.
+	    Finally, we observe that the complex $C^{4,2}_{4+\bullet,4}$ for
+	    cubic dimension 4 has no homology.
 	Example
-	    smallComplex(X42,4)
+	    complex(X42,4)
 	    homology(X42,4)
+
 	Text
 	    
 	    @SUBSECTION "Additional Features"@
@@ -473,8 +452,8 @@ Node
 	    first page of the spectral sequence. Specifically, consider the differentials
 	    $d^1_{i,0} \colon E^1_{i,0} \to E^1_{i-1,0}$ with $1\leqslant i\leqslant n$.
 	    The @TT "differential"@ method takes the elements of $E^1_{i,0}$ that
-	    generate the homology of the $i$-th small complex (computed using @TT
-		"homology"@) and returns their image under $d^1_{i,0}$.
+	    generate the homology group $H_i (C^{i,r}_{i+\bullet,i})$ (as computed
+		using @TT "homology"@) and returns their image under $d^1_{i,0}$.
 	    Once again, the result is expressed as a linear combination of squarefree
 	    monomials corresponding to simplices.
 
@@ -490,11 +469,12 @@ Node
 	    L = differential(X42,3);
 	    netList L
 	Text
-	    Now, the homology of the small complex of cubic dimension 3 has two
+	    Now, the homology group $E^1_{3,0} = H_3 (C^{3,2}_{3+\bullet,3})$ has two
 	    generators, and $d^1_{3,0}$ sends them to the expressions above,
-	    which are the same. This means we can change basis in the homology
+	    which are equal. This means we can change basis in the homology
 	    by taking the sum and difference of the generators, so that $d^1_{3,0}$
-	    sends one of these new basis elements to zero.
+	    sends one of these new basis elements to zero. The other basis element
+	    is sent to twice the boundary of the cube.
 	Example
 	    netList {L_0+L_1,L_0-L_1}
 	Text
@@ -507,18 +487,35 @@ Node
 	Example
 	    peek X42
 	Text
-	    Most of the data is self explanatory. The key @TT "complex"@ stores the
-	    simplicial chain complex of the entire simplicial complex. Access to the
-	    simplicial complex and related data (e.g.: faces, chain complex, boundary
-		map, homology, and Stanley-Reisner ideal) is provided by the Macaulay2
-	    package @TO "SimplicialComplexes"@. The small complexes, their homology,
-	    and characters are stored in dedicated keys to avoid computing them again.
-	    The key @TT "cubicDimension"@ contains a hash table indexed by integers.
-	    Each key $p$ corresponds to a table, indexed by dimension, indicating
-	    the position of the faces of $\{0\}^{n-p} \times X^{p,r}$ within the list
-	    of faces of $X^{n,r}$. This information is used to form the differentials
-	    in the small complexes by restricting the boundary map of $X^{n,r}$ to
-	    $\{0\}^{n-p} \times X^{p,r}$.
+	    The keys @TT "size"@ and @TT "scale"@ store the parameters $n$ and $r$.
+	    We store the simplicial complex, its Stanley-Reisner ideal and ambient
+	    polynomial ring, and its simplicial chain complex in dedicated keys.
+	    This data, along with other functionality for working with simplicial
+	    complexes such as computing faces, boundary maps, and homology, is
+	    provided by the Macaulay2 package @TO "SimplicialComplexes"@.
+	    
+	    The integer key $p$ stores the information about the complex for cubic
+	    dimension $p$, after it is computed. For example, let us look at $p=2$.
+	Example
+	    peek X42#2
+	Text
+	    The complex $C^{p,r}_{p+\bullet,p}$ is stored under @TT "complex"@.
+	    The @TT "faces"@ key holds a hash table indexed by integers.
+	    Each key $i$ corresponds to a list holding the position of the $i$-faces
+	    of cubic dimension $p$
+	    of $\{0\}^{n-p} \times X^{p,r}$ within the list of faces of $X^{n,r}$.
+	    This data is used to form the differentials in $C^{p,r}_{p+\bullet,p}$
+	    by restricting the boundary map of $X^{n,r}$ to the appropriate faces.
+	    The @TT "map"@ key holds a ring homomorphism between the polynomial rings
+	    of $X^{n,r}$ and $X^{p,r}$. The ring of $X^{p,r}$ is skew-commutative so
+	    that a squarefree monomial represents an oriented simplex; this is crucial
+	    for the correct computation of characters.
+	    The @TT "homology"@ and @TT "character"@ keys contain mutable hash tables
+	    with integer keys corresponding to homological degrees, and values
+	    used to store homology (as modules over polynomial rings) and characters
+	    after they are computed.
+	    The @TT "presentation"@ key holds equivalent information about
+	    homology but as a vector space.
     Caveat
 	The computers we have access to are able to perform the computations above
 	for $X^{6,3}$, which take a few minutes, but crash Macaulay2 upon attempting
