@@ -1,0 +1,21 @@
+use application "polytope";
+my $n=6;
+my $Q=cube($n);
+my $V=$Q->VERTICES;
+my $m=int(2**$n);
+my $M=new Matrix($m,$m);
+my $m1 = $m - 1;
+foreach my $i (0..$m1) {
+	my $a = $V->[$i];
+	foreach my $j (0..$m1) {
+		my $b = $V->[$j];
+		my $d = $a - $b;
+		my @ad = map { abs $_ } @{$d};
+		my $c = new Vector( @ad );
+		$M->elem($i,$j) = sum($c)/2;
+	}
+}
+use application "topaz";
+my $X = vietoris_rips_complex($M,4.1);
+my $p = $X->HOMOLOGY;
+save_data($p,"betti.poly");
