@@ -1,0 +1,1 @@
+The file `VietorisRipsHypercube.m` contains a package for the software [Macaulay2](https://macaulay2.com). You can view the package documentation at URL. To use the package, download the file to our computer, then run Macaulay2 from the folder where the file was downloaded and type `needsPackage "VietorisRipsHypercube".
