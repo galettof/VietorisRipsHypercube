@@ -408,7 +408,7 @@ Node
 	Text
 	    We proceed to decompose this into irreducible characters.
 	    This functionality requires at least version 2.6
-	    of the @TO "BettiCharacters"@ package, which can be downloaded at
+	    of the @TT "BettiCharacters"@ package, which can be downloaded at
 	    @HREF "https://github.com/galettof/BettiCharacters"@.
 	    First, we construct the character table of $\mathfrak{H}_2$. Then, we
 	    express the character above as a positive integer linear combination
@@ -484,7 +484,7 @@ Node
 
 	    All the information about the simplicial complex $X^{n,2}$ is stored in
 	    an object of type @TT "VRData"@ which is a dedicated type of
-	    @TO "HashTable"@. Let us take a look at the object for the example above.
+	    @TT "HashTable"@. Let us take a look at the object for the example above.
 	Example
 	    peek X42
 	Text
@@ -493,7 +493,7 @@ Node
 	    polynomial ring, and its simplicial chain complex in dedicated keys.
 	    This data, along with other functionality for working with simplicial
 	    complexes such as computing faces, boundary maps, and homology, is
-	    provided by the Macaulay2 package @TO "SimplicialComplexes"@.
+	    provided by the Macaulay2 package @TT "SimplicialComplexes"@.
 	    
 	    The integer key $p$ stores the information about the complex for cubic
 	    dimension $p$, after it is computed. For example, let us look at $p=2$.
@@ -518,7 +518,7 @@ Node
 	    The @TT "presentation"@ key holds equivalent information about
 	    homology but as a vector space.
 
-	    Finally, the @TO "MonomialSize"@ option specifies the minimum number of bits
+	    Finally, the @TT "MonomialSize"@ option specifies the minimum number of bits
 	    to be used for storing each exponent in a monomial. Its default value for
 	    this package is 16, which speeds up some computations. Users can change this
 	    when constructing the VR complex (e.g. @TT "VRHypercube(4,2,MonomialSize=>32)"@).
