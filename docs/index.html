@@ -142,7 +142,7 @@ o7 : Character</code></pre>
           </tr>
         </table>
         <div>
-          <p>We proceed to decompose this into irreducible characters. This functionality requires at least version 2.6 of the <a title="finite group characters on free resolutions and graded modules" href="../../BettiCharacters/html/index.html">BettiCharacters</a> package, which can be downloaded at <a href="https://github.com/galettof/BettiCharacters">https://github.com/galettof/BettiCharacters</a>. First, we construct the character table of $\mathfrak{H}_2$. Then, we express the character above as a positive integer linear combination of irreducible characters.</p>
+          <p>We proceed to decompose this into irreducible characters. This functionality requires at least version 2.6 of the <span class="tt">BettiCharacters</span> package, which can be downloaded at <a href="https://github.com/galettof/BettiCharacters">https://github.com/galettof/BettiCharacters</a>. First, we construct the character table of $\mathfrak{H}_2$. Then, we express the character above as a positive integer linear combination of irreducible characters.</p>
         </div>
         <table class="examples">
           <tr>
@@ -367,7 +367,7 @@ o24 = |- 2e     e     e      + 2e     e     e      + 2e     e     e      - 2e   
         <div>
           <p></p>
           <h2>Technical Details</h2>
-          <p>All the information about the simplicial complex $X^{n,2}$ is stored in an object of type <span class="tt">VRData</span> which is a dedicated type of <a title="the class of all hash tables" href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Hash__Table.html">HashTable</a>. Let us take a look at the object for the example above.</p>
+          <p>All the information about the simplicial complex $X^{n,2}$ is stored in an object of type <span class="tt">VRData</span> which is a dedicated type of <span class="tt">HashTable</span>. Let us take a look at the object for the example above.</p>
         </div>
         <table class="examples">
           <tr>
@@ -395,7 +395,7 @@ o25 = VRData{0 => MutableHashTable{...6...}                                     
           </tr>
         </table>
         <div>
-          <p>The keys <span class="tt">size</span> and <span class="tt">scale</span> store the parameters $n$ and $r$. We store the simplicial complex, its Stanley-Reisner ideal and ambient polynomial ring, and its simplicial chain complex in dedicated keys. This data, along with other functionality for working with simplicial complexes such as computing faces, boundary maps, and homology, is provided by the Macaulay2 package <a title="exploring abstract simplicial complexes within commutative algebra" href="../../SimplicialComplexes/html/index.html">SimplicialComplexes</a>.</p>
+          <p>The keys <span class="tt">size</span> and <span class="tt">scale</span> store the parameters $n$ and $r$. We store the simplicial complex, its Stanley-Reisner ideal and ambient polynomial ring, and its simplicial chain complex in dedicated keys. This data, along with other functionality for working with simplicial complexes such as computing faces, boundary maps, and homology, is provided by the Macaulay2 package <span class="tt">SimplicialComplexes</span>.</p>
           <p>The integer key $p$ stores the information about the complex for cubic dimension $p$, after it is computed. For example, let us look at $p=2$.</p>
         </div>
         <table class="examples">
@@ -422,7 +422,7 @@ o26 = MutableHashTable{character => MutableHashTable{...1...}                   
         </table>
         <div>
           <p>The complex $C^{p,r}_{p+\bullet,p}$ is stored under <span class="tt">complex</span>. The <span class="tt">faces</span> key holds a hash table indexed by integers. Each key $i$ corresponds to a list holding the position of the $i$-faces of cubic dimension $p$ of $\{0\}^{n-p} \times X^{p,r}$ within the list of faces of $X^{n,r}$. This data is used to form the differentials in $C^{p,r}_{p+\bullet,p}$ by restricting the boundary map of $X^{n,r}$ to the appropriate faces. The <span class="tt">map</span> key holds a ring homomorphism between the polynomial rings of $X^{n,r}$ and $X^{p,r}$. The ring of $X^{p,r}$ is skew-commutative so that a squarefree monomial represents an oriented simplex; this is crucial for the correct computation of characters. The <span class="tt">homology</span> and <span class="tt">character</span> keys contain mutable hash tables with integer keys corresponding to homological degrees, and values used to store homology (as modules over polynomial rings) and characters after they are computed. The <span class="tt">presentation</span> key holds equivalent information about homology but as a vector space.</p>
-          <p>Finally, the <a title="an optional argument" href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Monomial__Size.html">MonomialSize</a> option specifies the minimum number of bits to be used for storing each exponent in a monomial. Its default value for this package is 16, which speeds up some computations. Users can change this when constructing the VR complex (e.g. <span class="tt">VRHypercube(4,2,MonomialSize=>32)</span>).</p>
+          <p>Finally, the <span class="tt">MonomialSize</span> option specifies the minimum number of bits to be used for storing each exponent in a monomial. Its default value for this package is 16, which speeds up some computations. Users can change this when constructing the VR complex (e.g. <span class="tt">VRHypercube(4,2,MonomialSize=>32)</span>).</p>
         </div>
       </div>
 
