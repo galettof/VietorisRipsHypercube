@@ -1,1 +1,5 @@
-Put python code here
+The file `matrix_generator.py` contains [Python](https://www.python.org/) code to build matrices of the boundary map of $X^{n,3}$ restricted to faces of diameter 3 and cubic dimension $p$ with $5\leqslant p\leqslant 9$. Open the file to edit the value of `c` for the desired cubic dimension, then save it and run it with `python matrix_generator.py`. By default, the matrices are saved in [SciPy](https://docs.scipy.org/doc/scipy/reference/sparse.html) sparse NPZ format. Set `magma=True` to save the matrices in a sparse format compatible with [Magma](https://magma.maths.usyd.edu.au/magma/).
+
+After saving the three matrices for $p=8$ and the two matrices for $p=9$ in SciPy format all in the same folder, run `python ranks_homology.py` from that folder to compute their ranks.
+
+To compute ranks for $p=8$ in Magma, run it from the folder containing the previously saved matrices, then issue the commands in `magma_rank.txt` (similar commands apply for $p=9$).
