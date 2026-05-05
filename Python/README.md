@@ -2,4 +2,4 @@ The file `matrix_generator.py` contains [Python](https://www.python.org/) code t
 
 After saving the three matrices for $p=8$ and the two matrices for $p=9$ in SciPy format all in the same folder, run `python ranks_homology.py` from that folder to compute their ranks.
 
-To compute ranks for $p=8$ in Magma, run it from the folder containing the previously saved matrices, then issue the commands in `magma_rank.txt` (similar commands apply for $p=9$).
+To compute ranks for $p=8$ in Magma, run it from the folder containing the matrices in Magma format, then issue the commands in `magma_rank.txt` (similar commands apply for $p=9$).
