@@ -1,0 +1,6 @@
+load "matrix81.txt";
+T1:=Time(); R1:=Rank(M1); U1:=Time(T1);
+load "matrix82.txt";
+T2:=Time(); R2:=Rank(M2); U2:=Time(T2);
+load "matrix83.txt";
+T3:=Time(); R3:=Rank(M3); U3:=Time(T3);
