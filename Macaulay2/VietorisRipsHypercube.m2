@@ -1,7 +1,7 @@
 newPackage(
      "VietorisRipsHypercube",
      Version => "1.0",
-     Date => "April 23, 2026",
+     Date => "May 27, 2026",
      AuxiliaryFiles => false,
      Authors => {
 	 {Name => "Federico Galetto",
