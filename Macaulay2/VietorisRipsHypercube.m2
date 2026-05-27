@@ -230,7 +230,7 @@ hActBinSeq = R -> (
 	matrix {
 	    for f in gens R list (
 		u := last baseName f;
-		v := toSequence apply(u_sigma + s, i -> i % 2);
+		v := toSequence apply(toList(u_sigma) + s, i -> i % 2);
 		value ( (first baseName f)_v )
 		)
 	    }
