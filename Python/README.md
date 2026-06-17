@@ -3,3 +3,5 @@ The file `matrix_generator.py` contains [Python](https://www.python.org/) code t
 After saving the three matrices for $p=8$ and the two matrices for $p=9$ in SciPy format all in the same folder, run `python ranks_homology.py` from that folder to compute their ranks.
 
 To compute ranks for $p=8$ in Magma, run it from the folder containing the matrices in Magma format, then issue the commands in `magma_rank.txt` (similar commands apply for $p=9$).
+
+**AI disclosure.** The Python code to compute ranks of matrices modulo 2 was generated using GPT-5.5; the results produced by this code were validated using Magma. GPT-5.3 or earlier models were used only to clean or simplify portions of the remaining Python code. All code was thoroughly reviewed by humans before release.
