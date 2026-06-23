@@ -322,7 +322,8 @@ Node
     Description
 	Text
 	    This Macaulay2 package implements computations described in the article
-	    "Homology of Vietoris-Rips complexes of hypercube graphs via group actions"
+            @HREF {"https://arxiv.org/abs/2606.20784",
+                "Homology of Vietoris-Rips complexes of hypercube graphs via group actions"}@
 	    by Federico Galetto, Jonathan Montaño, and Zoe Wellner.
 	    The most up-to-date version of this package can be found at
 	    @HREF "https://github.com/galettof/VietorisRipsHypercube"@.
